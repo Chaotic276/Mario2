@@ -10,37 +10,37 @@ public class Render {
     private final int MAX_BATCH_SIZE = 1000;
     private List<RenderBatch> batches;
 
-    public Render(){
+    public Render() {
         this.batches = new ArrayList<>();
     }
 
-    public void add(GameObject go){
+    public void add(GameObject go) {
         SpriteRender spr = go.getComponent(SpriteRender.class);
-        if(spr != null){
+        if (spr != null) {
             add(spr);
         }
     }
 
-    public void add(SpriteRender spr){
+    private void add(SpriteRender sprite) {
         boolean added = false;
-        for(RenderBatch batch : batches){
-            if(batch.hasRoom()){
-                batch.addSprite(spr);
+        for (RenderBatch batch : batches) {
+            if (batch.hasRoom()) {
+                batch.addSprite(sprite);
                 added = true;
                 break;
             }
         }
 
-        if(!added){
+        if (!added) {
             RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE);
             newBatch.start();
             batches.add(newBatch);
-            newBatch.addSprite(spr);
+            newBatch.addSprite(sprite);
         }
     }
 
-    public void render(){
-        for(RenderBatch batch : batches){
+    public void render() {
+        for (RenderBatch batch : batches) {
             batch.render();
         }
     }
